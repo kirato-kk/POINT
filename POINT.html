@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11Pay ポイント発行管理</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; background: #f8f9fa; }
+    .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 400px; margin: 0 auto; }
+    h2 { color: #ff0033; }
+    input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+    button { width: 100%; padding: 12px; background: #ff0033; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+    #qr-result { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>11Pay ポイント発行</h2>
+  <p>付与するポイント数を入力してください</p>
+  <input type="number" id="point-amount" placeholder="例: 1000">
+  <button onclick="generateQr()">QRコードを発行</button>
+
+  <div id="qr-result"></div>
+</div>
+
+<script>
+  function generateQr() {
+    const amount = document.getElementById("point-amount").value;
+    if (!amount || amount <= 0) {
+      alert("有効なポイント数を入力してください");
+      return;
+    }
+
+    // 「CHARGE_」を先頭につけてポイント発行データとして定義
+    const qrData = `CHARGE_${amount}`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrData)}`;
+    
+    document.getElementById("qr-result").innerHTML = `
+      <p>このQRをユーザーに読み取ってもらってください</p>
+      <img src="${qrUrl}" alt="チャージ用QRコード">
+      <p style="font-weight:bold;">${amount} ポイント</p>
+    `;
+  }
+</script>
+
+</body>
+</html>

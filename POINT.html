@@ -24,6 +24,7 @@
   <div id="qr-result"></div>
 </div>
 
+<!-- ポイント発行サイトの generateQr 関数を修正 -->
 <script>
   function generateQr() {
     const amount = document.getElementById("point-amount").value;
@@ -32,13 +33,13 @@
       return;
     }
 
-    // 「CHARGE_」を先頭につけてポイント発行データとして定義
-    const qrData = `CHARGE_${amount}`;
+    // POINT_ を付与するように変更
+    const qrData = `POINT_${amount}`;
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrData)}`;
     
     document.getElementById("qr-result").innerHTML = `
       <p>このQRをユーザーに読み取ってもらってください</p>
-      <img src="${qrUrl}" alt="チャージ用QRコード">
+      <img src="${qrUrl}" alt="ポイント付与用QRコード">
       <p style="font-weight:bold;">${amount} ポイント</p>
     `;
   }
